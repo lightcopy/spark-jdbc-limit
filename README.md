@@ -16,7 +16,9 @@ I tested with **postgres** and **mysql** with following `spark-shell` on large t
 below is done for simple range DataFrame.
 
 ```shell
-spark-shell --jars target/scala-2.11/spark-jdbc-limit_2.11-0.1.0-SNAPSHOT.jar --packages mysql:mysql-connector-java:5.1.38
+spark-shell \
+  --jars target/scala-2.11/spark-jdbc-limit_2.11-0.1.0-SNAPSHOT.jar \
+  --packages mysql:mysql-connector-java:5.1.38
 ```
 
 Following code is used to test reads with limit:
@@ -55,7 +57,8 @@ GlobalLimit 21
 
 == Physical Plan ==
 CollectLimit 21
-+- *Scan JDBCRelationWithLimit(test) [numPartitions=1] [limit=21] [id#23L] ReadSchema: struct<id:bigint>
++- *Scan JDBCRelationWithLimit(test) [numPartitions=1] [limit=21] [id#23L]
+      ReadSchema: struct<id:bigint>
 ```
 
 Here is query plan for `df.limit(10).groupBy("id").count().collect`:
@@ -85,7 +88,8 @@ Aggregate [id#23L], [id#23L, count(1) AS count#49L]
    +- *GlobalLimit 10
       +- Exchange SinglePartition
          +- *LocalLimit 10
-            +- *Scan JDBCRelationWithLimit(test) [numPartitions=1] [limit=10] [id#23L] ReadSchema: struct<id:bigint>
+            +- *Scan JDBCRelationWithLimit(test) [numPartitions=1] [limit=10] [id#23L]
+                  ReadSchema: struct<id:bigint>
 ```
 
 ## Build

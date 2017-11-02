@@ -18,7 +18,7 @@ object PropagateJDBCLimit extends Rule[LogicalPlan] {
       rel @ LogicalRelation(
         prev @ JDBCRelation(parts, jdbcOptions), _, table)) =>
       // this is done to preserve aliases for expressions
-      val attr = Some(rel.attributeMap.values.toList)
+      val attr = rel.attributeMap.values.toList
       val updatedRel = LogicalRelation(
         JDBCRelationWithLimit(parts, jdbcOptions, value)(prev.sparkSession),
         attr,

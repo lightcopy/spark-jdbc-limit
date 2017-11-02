@@ -20,7 +20,7 @@ class ExtJdbcRelationProvider extends JdbcRelationProvider {
 
     val conn = ExtJdbcUtils.createConnectionFactory(jdbcOptions)()
     try {
-      val tableExists = JdbcUtils.tableExists(conn, url, table)
+      val tableExists = JdbcUtils.tableExists(conn, jdbcOptions)
       if (tableExists) {
         mode match {
           case SaveMode.Overwrite =>
@@ -31,7 +31,7 @@ class ExtJdbcRelationProvider extends JdbcRelationProvider {
             } else {
               // Otherwise, do not truncate the table, instead drop and recreate it
               JdbcUtils.dropTable(conn, table)
-              JdbcUtils.createTable(df.schema, url, table, createTableOptions, conn)
+              JdbcUtils.createTable(conn, df, jdbcOptions)
               ExtJdbcUtils.saveTable(df, url, table, jdbcOptions)
             }
 
@@ -48,7 +48,7 @@ class ExtJdbcRelationProvider extends JdbcRelationProvider {
             // Therefore, it is okay to do nothing here and then just return the relation below.
         }
       } else {
-        JdbcUtils.createTable(df.schema, url, table, createTableOptions, conn)
+        JdbcUtils.createTable(conn, df, jdbcOptions)
         ExtJdbcUtils.saveTable(df, url, table, jdbcOptions)
       }
     } finally {

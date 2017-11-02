@@ -8,7 +8,7 @@ crossScalaVersions := Seq("2.10.5", "2.11.7")
 
 spName := "lightcopy/spark-jdbc-limit"
 
-val defaultSparkVersion = "2.1.0"
+val defaultSparkVersion = "2.2.0"
 
 sparkVersion := sys.props.getOrElse("spark.testVersion", defaultSparkVersion)
 

@@ -5,6 +5,9 @@ Repository provides rule to push down `LocalLimit` to JDBC relation and add it t
 query. You could potentially use `fetchsize` option and/or filters, but it is much nicer when
 optimizer does this job for you:).
 
+This repository also contains fix for global commit/rollback for Postgres; it will roll back all
+commits made within task set when error occurs in any tasks, including the very last one.
+
 ## Usage
 Build jar using `sbt package` and add it to Spark jars classpath. In the code add rule to the
 Spark session extra optimizations, like this:
